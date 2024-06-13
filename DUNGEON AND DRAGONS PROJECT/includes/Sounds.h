@@ -32,5 +32,5 @@ private:
 	Uint8* m_wave_start;
 	Uint32 m_waveLength;
 };
-Sound* changeFilePath( std::string newPath);
+Sound* changeFilePath(std::string newPath);
 void StartPlaying(Sound* s);

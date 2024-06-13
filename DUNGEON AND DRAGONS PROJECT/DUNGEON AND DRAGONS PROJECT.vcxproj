@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Functions.cpp" />
+    <ClCompile Include="src\LoopCalls.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Races.cpp" />
     <ClCompile Include="src\Sounds.cpp" />
