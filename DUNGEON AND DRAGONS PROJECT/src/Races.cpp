@@ -13,18 +13,18 @@ Entity::Entity() {}
 Entity::~Entity() {}
 const int Entity::getCharRace() { return 4; }
 
-Warrior::Warrior(std::string pName) { Warrior::playerName = pName;  Warrior::level = 0; }
+Warrior::Warrior(std::string pName) { Warrior::playerName = pName;  Warrior::level = 0; HealthPoints = 100; }
 Warrior::Warrior() {}
 Warrior::~Warrior() {}
 const int Warrior::getCharRace() { return 1; }
 
-Wizard::Wizard(std::string pName) { Wizard::playerName = pName; Wizard::level = 0; }
+Wizard::Wizard(std::string pName) { Wizard::playerName = pName; Wizard::level = 0; HealthPoints = 100; }
 Wizard::Wizard() {}
 
 Wizard::~Wizard() {}
 const int Wizard::getCharRace() { return 2; }
 
-Rogue::Rogue(std::string pName) { Rogue::playerName = pName; Rogue::level = 0; }
+Rogue::Rogue(std::string pName) { Rogue::playerName = pName; Rogue::level = 0; HealthPoints = 100; }
 Rogue::Rogue() {}
 Rogue::~Rogue() {}
 const int Rogue::getCharRace() { return 3; }
@@ -108,7 +108,9 @@ void logChoice(Entity*& e)
     sleep_for(2s);
     std::cout << std::setw(57) << std::right << "Your class is " << classType << '\n';
     sleep_for(2s);
-    std::cout << std::setw(59) << std::right << "Your level is 0." << std::endl;
+    std::cout << std::setw(59) << std::right << "Your level is 0." << e->level << std::endl;
+    sleep_for(2s);
+    std::cout << std::setw(59) << std::right << "Your HP is ." << e->HealthPoints << std::endl;
     sleep_for(2s);
 }
 

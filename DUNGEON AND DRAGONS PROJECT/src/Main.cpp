@@ -7,7 +7,7 @@
 int main()
 {	
 								
-	Sound* mmenu = new Sound("./music/Main_Menu.wav");
+	Sound* mmenu("./music/Main_Menu.wav");
 	StartPlaying(mmenu);
 	//mmenu->SetupDevice();
 	//mmenu->PlaySound();
@@ -30,6 +30,11 @@ int main()
 			AddChestItemsToInventory(player, ptr);
 			delete ptr;
 			logFoundItems(player);
+
+			//battleScene()
+			mmenu->StopSound();
+			mmenu = changeFilePath("./music/BattleFinal.wav");
+			StartPlaying(mmenu);
 		}
 		else
 		{

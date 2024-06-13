@@ -50,6 +50,7 @@ Sound* changeFilePath(std::string newPath)
 
 void StartPlaying(Sound* s)
 {
+	//settingUp the new device with the new filepath then calling PlaySound() methods, defined in Sounds.cpp
 	s->SetupDevice();
 	s->PlaySound();
 }
