@@ -8,23 +8,23 @@ Item::Item() {}
 std::string Item::returnItemName() { return this->m_item_name; }
 
 
-Entity::Entity(std::string pName) : playerName(pName) { this->level = 0; }
+Entity::Entity(std::string pName) { Entity::playerName = pName; Entity::level = 0; Entity::dmg = 35; this->level = 0; }
 Entity::Entity() {}
 Entity::~Entity() {}
 const int Entity::getCharRace() { return 4; }
 
-Warrior::Warrior(std::string pName) { Warrior::playerName = pName;  Warrior::level = 0; HealthPoints = 100; }
+Warrior::Warrior(std::string pName) { Warrior::playerName = pName;  Warrior::level = 0; Warrior::dmg = 35; Warrior::HealthPoints = 100; }
 Warrior::Warrior() {}
 Warrior::~Warrior() {}
 const int Warrior::getCharRace() { return 1; }
 
-Wizard::Wizard(std::string pName) { Wizard::playerName = pName; Wizard::level = 0; HealthPoints = 100; }
+Wizard::Wizard(std::string pName) { Wizard::playerName = pName; Wizard::level = 0; Wizard::dmg = 35; HealthPoints = 100; }
 Wizard::Wizard() {}
 
 Wizard::~Wizard() {}
 const int Wizard::getCharRace() { return 2; }
 
-Rogue::Rogue(std::string pName) { Rogue::playerName = pName; Rogue::level = 0; HealthPoints = 100; }
+Rogue::Rogue(std::string pName) { Rogue::playerName = pName; Rogue::level = 0; Rogue::dmg = 35; HealthPoints = 100; }
 Rogue::Rogue() {}
 Rogue::~Rogue() {}
 const int Rogue::getCharRace() { return 3; }
@@ -104,13 +104,13 @@ void logChoice(Entity*& e)
     case 3: classType = "ROGUE"; break;
     }
 
-    std::cout << std::setw(56) << std::right << "Your name is " << e->playerName << '\n';
+    std::cout << std::setw(60) << std::right << "Your name is " << e->playerName << '\n';
     sleep_for(2s);
-    std::cout << std::setw(57) << std::right << "Your class is " << classType << '\n';
+    std::cout << std::setw(56) << std::right << "CLASS is " << classType << '\n';
     sleep_for(2s);
-    std::cout << std::setw(59) << std::right << "Your level is 0." << e->level << std::endl;
+    std::cout << std::setw(56) << std::right << "LEVEL is " << e->level << std::endl;
     sleep_for(2s);
-    std::cout << std::setw(59) << std::right << "Your HP is ." << e->HealthPoints << std::endl;
+    std::cout << std::setw(53) << std::right << "HP is " << e->HealthPoints << std::endl;
     sleep_for(2s);
 }
 
@@ -128,6 +128,7 @@ std::vector<Item*>* ChestFindingScene(Entity* p)
 
     std::vector<Item*>* ptr = new std::vector<Item*>;
     std::cout << "You have found a chest!" << std::endl;
+    sleep_for(2s);
 
     if (!p)
     {
@@ -140,6 +141,7 @@ std::vector<Item*>* ChestFindingScene(Entity* p)
         std::cout << "Error. Program terminates." << std::endl;
         return NULL;
     }
+    
 
     switch (p->getCharRace())
     {
@@ -172,7 +174,10 @@ std::vector<Item*>* ChestFindingScene(Entity* p)
     }
     }
     p->level++;
+    p->dmg++;
     std::cout << std::right << std::setw(15) << "-Congrats! You advanced to level " << p->level << std::endl;
+    std::cout << std::right << std::setw(15) << "Your damage also increased by 25 points." << p->dmg << std::endl;
+
     return ptr;
 }
 
@@ -182,7 +187,7 @@ void logFoundItems(Entity* p)
     for (int i = 0; i < p->m_item_inventory.size(); i++)
     {
         std::cout << std::right << std::setw(60) << p->m_item_inventory[i]->returnItemName() << std::endl;
-
+        sleep_for(2s);
     }
 
 

@@ -20,14 +20,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Functions.cpp" />
-    <ClCompile Include="src\LoopCalls.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Monster.cpp" />
     <ClCompile Include="src\Races.cpp" />
     <ClCompile Include="src\Sounds.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes\ConsoleColors.h" />
     <ClInclude Include="includes\Functions.h" />
+    <ClInclude Include="includes\Monster.h" />
     <ClInclude Include="includes\Namespaces.h" />
     <ClInclude Include="includes\Races.h" />
   </ItemGroup>

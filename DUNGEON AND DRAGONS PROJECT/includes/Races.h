@@ -26,6 +26,7 @@ class Entity
 protected:
 	int level;
 	int HealthPoints;
+	int dmg;
 	std::string playerName;
 	std::vector<Item*> m_item_inventory;
 public:
