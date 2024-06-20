@@ -40,8 +40,9 @@ public:
 	Entity(std::string pName);
 	Entity();
 	~Entity();
-	virtual int getHealthPoints();
+	virtual int getHealthPoints() = 0;
 	virtual int getDmgPoints();
+	virtual int setNewHP(int amount);
 
 
 	const virtual int getCharRace();
@@ -72,6 +73,8 @@ public:
 	~Warrior();
 	const int getCharRace();
     int getHealthPoints();
+	int setNewHP(int amount);
+
 
 };
 
@@ -83,7 +86,7 @@ public:
 	~Wizard();
 	const int getCharRace();
 	int getHealthPoints();
-
+	int setNewHP(int amount);
 };
 
 class Rogue : public Entity
@@ -94,5 +97,5 @@ public:
 	~Rogue();
 	const int getCharRace();
 	int getHealthPoints();
-
+	int setNewHP(int amount);
 };

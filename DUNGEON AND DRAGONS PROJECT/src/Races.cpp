@@ -2,7 +2,7 @@
 #include "Races.h"
 #include "Namespaces.h"
 #include <random>
-#include "Monster.h"
+
 
 Item::Item(std::string itmName, int m_type) : m_item_name(itmName), m_item_type(m_type) {}
 Item::Item() {}
@@ -31,6 +31,11 @@ int Entity::getDmgPoints()
 {
     return dmg;
 }
+int Entity::setNewHP(int amount)
+{
+    this->HealthPoints -= amount;
+    return this->HealthPoints; 
+}
 
 Warrior::Warrior(std::string pName) { Warrior::playerName = pName;  Warrior::level = 0; Warrior::dmg = 35; Warrior::HealthPoints = 100; }
 Warrior::Warrior() {}
@@ -38,7 +43,13 @@ Warrior::~Warrior() {}
 const int Warrior::getCharRace() { return 1; }
 int Warrior::getHealthPoints()
 {
-    return HealthPoints;
+    return this->HealthPoints;
+}
+int Warrior::setNewHP(int amount)
+{
+   this->HealthPoints -= amount;
+   return this->HealthPoints;
+
 }
 
 
@@ -48,8 +59,16 @@ Wizard::~Wizard() {}
 const int Wizard::getCharRace() { return 2; }
 int Wizard::getHealthPoints()
 {
-    return HealthPoints;
+    return this->HealthPoints;
+
 }
+int Wizard::setNewHP(int amount)
+{
+    this->HealthPoints -= amount;
+    return this->HealthPoints;
+
+}
+
 
 
 Rogue::Rogue(std::string pName) { Rogue::playerName = pName; Rogue::level = 0; Rogue::dmg = 35; HealthPoints = 100; }
@@ -58,7 +77,12 @@ Rogue::~Rogue() {}
 const int Rogue::getCharRace() { return 3; }
 int Rogue::getHealthPoints()
 {
-    return HealthPoints;
+    return this->HealthPoints;
+}
+int Rogue::setNewHP(int amount)
+{
+    this->HealthPoints -= amount;
+    return this->HealthPoints;
 }
 
 
@@ -179,7 +203,7 @@ void ChestFindingScene(Entity* p)
     char temp = '\0';
     std::cout << "Do you wish to open it? Y/N" << std::endl;
     std::cin >> temp;
-    if (temp == 'Y')
+    if (temp == 'Y' || temp == 'y')
     {
         switch (p->getCharRace())
         {
@@ -250,9 +274,9 @@ void GrantBonuses(Entity* p)
         {
         case ItemType::ITEM_TYPE_WEAPON:
             {
-            std::cout << std::right << std::setw(55) << "Due to your " << p->m_item_inventory[i]->returnItemName() << '\n' <<
-            std::right << std::setw(55) << "the elder gods have granted you some of their power.\n" <<
-            std::right << std::setw(55) << "permanently increasing your DAMAGE BY 40 POINTS." << std::endl;
+            std::cout << std::right << /*std::setw(25)*/  "Due to your " << p->m_item_inventory[i]->returnItemName() << std::endl;
+            std::cout << std::left << /*std::setw(55)*/   "the elder gods have granted you some of their power" << std::endl;
+            std::cout << std::left << /*std::setw(55) <<*/ "permanently increasing your DAMAGE BY 40 POINTS." << std::endl;
             p->dmg += 40;
             sleep_for(2s);
             break;
@@ -271,12 +295,12 @@ void GrantBonuses(Entity* p)
                     sleep_for(2s);
                     break;
                 }
-             std::cout << std::right << std::setw(55) << "Your overall AGILITY has also increased by 15 points." << std::endl;
+             std::cout << std::left << "Your overall AGILITY has also increased by 15 points." << std::endl;
             break;
 
             }
         }
-
+        std::cout << '\n';
     }
 }
 

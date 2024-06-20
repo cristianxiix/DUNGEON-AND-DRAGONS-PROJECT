@@ -1,9 +1,10 @@
 #pragma once
-#include "Functions.h"
-#include "Namespaces.h"
 #include "ConsoleColors.h"
-#include "Monster.cpp"
+#include "Functions.h"
+#include "Monster.h"
+#include "Namespaces.h"
 #include "Races.h"
+#include "Namespaces.h"
 
 void start()
 {
@@ -111,7 +112,7 @@ bool secondCheck()
     }
 }
 
-int CrossRoadsScene()
+Monster* CrossRoadsScene()
 {
     sleep_for(3s);
     int choice = 0;
@@ -131,54 +132,93 @@ int CrossRoadsScene()
 
     std::cout << std::right << std::setw(75) << "Great choice, adventurer! GOOD LUCK!" << std::endl;
     Monster* m = createMonster(choice);
-    return choice;
+    return m;
 }
-///
-//adauga hp si damage in functie de iteme (shield + 100 aparare, sabie + 100 damage, boots + 30 movement speed
-// 
-// 
-//void BattleScene() ->>encounter enemy
-void BattleScene(Monster* m, Entity* p)
+
+void BattleScene(Monster* mob, Entity* pl)
 {
-    std::string mbn;
-    if (m->ReturnMonsterType() == MonsterRaces::RACE_TYPE_GOBLIN)
-        mbn = "Goblin";
-    else if (m->ReturnMonsterType() == MonsterRaces::RACE_TYPE_TROLL)
-        mbn = "Troll";
-    else
-        mbn = "Orc";
-    std::cout << std::right << std::setw(55) << "GRRRRAAAAH!!! I am the Mighty " << mbn << " of this land!" << std::endl;
+    
+    std::cout << std::right << std::setw(55) << "GRRRRAAAAH!!! I am the Mighty " << mob->ReturnMonsterBaseName() << " of this land!" << std::endl;
     std::cout << std::right << std::setw(55) << "Turn back or face me!" << std::endl;
 
     int choice;
+    std::string winner;
     std::cout << "1.I feel ready to fight this!" << std::endl;
     std::cout << "2.Maybe some other time." << std::endl;
     std::cin >> choice;
 
+    int mobRes = 0;
+    int pRes = 0;
     if (choice == 1)
     {
-        while (p->getHealthPoints() != 0 || m->returnMonsterHp() != 0)
+        while (mob->returnMonsterHp() != 0 || pl->getHealthPoints() != 0)
         {
-            AttackPlayer(p, m);
-            Attack(p, m);
+            
+            mobRes = AttackPlayer(mob);
+            pl->setNewHP(mobRes);
+            std::cout << "Player's new hp is:" << pl->getHealthPoints();
+            pRes = Attack(pl, mob);
+            mob->setNewMonsterHp(pRes);
+            std::cout << "Monster's new hp is:" << mob->returnMonsterHp();
+
+            sleep_for(3s);
+
+            if (mob->returnMonsterHp() == 0)
+                winner = "Player";
+            else
+            {
+                std::cout << "Game's over, coward" << std::endl;
+                return;
+            }
         }
-        
     }
-
-
-
-
-
-
-
-
-    else
-    {
-        std::cout << "Game's over, coward" << std::endl;
-        return;
-    }
-
+        std::cout << "The player has won!" << std::endl;
+    
 
 }
 
 
+////MONSTER BASE NAME CAN BE DELETED
+
+
+
+
+int AttackPlayer(Monster* m)
+{
+    if (m->hp == 0)
+    {
+        return -1;
+    }
+	std::vector<std::string> attacks;
+
+	std::random_device rd;
+	std::default_random_engine generator(rd());
+	std::uniform_int_distribution<int> distrib(0, 2);
+	int randomC = distrib(generator);
+
+
+	switch (m->ReturnMonsterType())
+	{
+	    case MonsterRaces::RACE_TYPE_GOBLIN:
+	    {
+		    attacks.push_back("Big Boulder");
+		    attacks.push_back("Acidic Spit");
+		    attacks.push_back("Jumping kick");
+	    }
+	    case MonsterRaces::RACE_TYPE_TROLL:
+	    {
+		    attacks.push_back("Vicious Strike");
+		    attacks.push_back("Jaw of the Troll");
+		    attacks.push_back("Holy Spirit");
+	    }
+	    case MonsterRaces::RACE_TYPE_ORC:
+	    {
+		    attacks.push_back("Bare Food");
+		    attacks.push_back("Axe Swing");
+		    attacks.push_back("Dark Horror");
+	    }
+	}
+
+	std::cout << std::right << std::setw(55) << "The MONSTER has struck the PLAYER with " << attacks[randomC] << " for " << m->dmg << "health points." << std::endl;
+	return m->dmg;
+}
