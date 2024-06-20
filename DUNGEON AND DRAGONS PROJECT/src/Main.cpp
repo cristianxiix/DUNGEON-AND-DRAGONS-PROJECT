@@ -3,7 +3,7 @@
 #include "Races.h"
 #include "Namespaces.h"
 #include "Sounds.h"
-
+#include "Monster.h"
 
 int main()
 {	
@@ -13,21 +13,17 @@ int main()
 	{
 		std::cout << "hehe";
 	}*/
-	
-
-
-
-	std::string tempSound = "./music/Main_Menu.wav";
 	Sound* mmenu = new Sound("./music/Main_Menu.wav");
 	StartPlaying(mmenu);
+
 	//mmenu->SetupDevice();
 	//mmenu->PlaySound();
 
-	std::vector<Item*>* ptr = nullptr;
 	start();
 	if (IntroScene())  /// raspundem daca vrem sau nu sa jucam
 	{
 		Entity* player = CreateCharacterRace(); // se creeaza jucatorul pe heap, prin intermediul unui Entity*
+		
 		logChoice(player);
 		mmenu->StopSound();
 		mmenu = changeFilePath("./music/Exploring.wav");
@@ -35,13 +31,14 @@ int main()
 		Wait();
 		if (checkContinue())
 		{
-			CrossRoadsScene(); /////////////////////////
-			
-			ptr = ChestFindingScene(player); //automat fara ptr
-			AddChestItemsToInventory(player, ptr); // de intrebart
-			delete ptr;
-			logFoundItems(player);
+			CrossRoadsScene(); //returneaza un int cu alegerea monstrului
 
+			
+			
+			ChestFindingScene(player); //automat fara ptr
+			//AddChestItemsToInventory(player, ptr); // de intrebart
+			
+			/////////////////////////
 			//battleScene()
 			mmenu->StopSound();
 			mmenu = changeFilePath("./music/BattleFinal.wav");

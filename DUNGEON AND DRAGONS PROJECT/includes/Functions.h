@@ -7,5 +7,6 @@ bool IntroScene();
 void Wait();
 bool checkContinue();
 bool secondCheck();
-short CrossRoadsScene();
+int CrossRoadsScene();
+
 

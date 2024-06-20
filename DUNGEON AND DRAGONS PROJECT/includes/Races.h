@@ -11,7 +11,12 @@ enum Races {
 	RACE_TYPE_ROGUE,
 	RACE_TYPE_MAX
 };
-
+enum ItemType
+{
+	ITEM_TYPE_WEAPON = 1,
+	ITEM_TYPE_ARMOR,
+	ITEM_TIME_ADDITIONAL
+};
 class Item
 {
 	std::string m_item_name;
@@ -38,16 +43,18 @@ public:
 	friend void logChoice(Entity*& e);
 	const virtual int getCharRace();
 	friend void AddChestItemsToInventory(Entity*& p, std::vector<Item*>* ptr);
-	friend std::vector<Item*>* ChestFindingScene(Entity* p);
+	friend void ChestFindingScene(Entity* p);
 	friend void logFoundItems(Entity* p);
+	friend void GrantBonuses(Entity* p);
 };
 
 
 Entity* CreateCharacterRace();  ////function definition inside Races.cpp
 void logChoice(Entity*& e); ////function definition inside Functions.cpp
 void AddChestItemsToInventory(Entity*& p, std::vector<Item*>* ptr);
-std::vector<Item*>* ChestFindingScene(Entity* p);
+void ChestFindingScene(Entity* p);
 void logFoundItems(Entity* p);
+void GrantBonuses(Entity* p);
 
 
 class Warrior : public Entity

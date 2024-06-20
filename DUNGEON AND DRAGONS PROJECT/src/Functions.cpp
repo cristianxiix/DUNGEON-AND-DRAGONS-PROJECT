@@ -2,7 +2,7 @@
 #include "Functions.h"
 #include "Namespaces.h"
 #include "ConsoleColors.h"
-
+#include "Monster.h"
 
 void start()
 {
@@ -110,10 +110,10 @@ bool secondCheck()
     }
 }
 
-short CrossRoadsScene()
+int CrossRoadsScene()
 {
     sleep_for(3s);
-    short choice;
+    int choice = 0;
     std::cout << std::right << std::setw(85) << "You're at a crossroads! Your choices are as follows:" << std::endl;
     std::flush(std::cout);
     sleep_for(2s);
@@ -127,16 +127,16 @@ short CrossRoadsScene()
     std::flush(std::cout);
     std::cin >> choice;
 
-    
+
     std::cout << std::right << std::setw(75) << "Great choice, adventurer! GOOD LUCK!" << std::endl;
+    Monster* m = createMonster(choice);
     return choice;
 }
-
-
 ///
 //adauga hp si damage in functie de iteme (shield + 100 aparare, sabie + 100 damage, boots + 30 movement speed
 // 
 // 
 //void BattleScene() ->>encounter enemy
+
 
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "Races.h"
 #include "Namespaces.h"
+#include <random>
 
 
 Item::Item(std::string itmName) : m_item_name(itmName) {}
@@ -8,8 +9,22 @@ Item::Item() {}
 std::string Item::returnItemName() { return this->m_item_name; }
 
 
-Entity::Entity(std::string pName) { Entity::playerName = pName; Entity::level = 0; Entity::dmg = 35; this->level = 0; }
-Entity::Entity() {}
+Entity::Entity(std::string pName) 
+{
+    Entity::playerName = pName; 
+    Entity::level = 0; 
+    Entity::dmg = 35; 
+    Entity::HealthPoints = 0;
+}
+Entity::Entity()
+{
+    if (playerName.empty())
+        playerName = "undefined";
+
+    Entity::level = 0;
+    Entity::dmg = 35; 
+    Entity::HealthPoints = 0;
+}
 Entity::~Entity() {}
 const int Entity::getCharRace() { return 4; }
 
@@ -112,6 +127,8 @@ void logChoice(Entity*& e)
     sleep_for(2s);
     std::cout << std::setw(53) << std::right << "HP is " << e->HealthPoints << std::endl;
     sleep_for(2s);
+    std::cout << std::setw(53) << std::right << "Damage is " << e->dmg << " per attack" << std::endl;
+
 }
 
 void AddChestItemsToInventory(Entity*& p, std::vector<Item*>* ptr)
@@ -123,7 +140,7 @@ void AddChestItemsToInventory(Entity*& p, std::vector<Item*>* ptr)
 
 }
 
-std::vector<Item*>* ChestFindingScene(Entity* p)
+void ChestFindingScene(Entity* p)
 {
 
     std::vector<Item*>* ptr = new std::vector<Item*>;
@@ -133,52 +150,66 @@ std::vector<Item*>* ChestFindingScene(Entity* p)
     if (!p)
     {
         std::cout << "Program exits due to an exception being thrown inside ChestFindingScene function, referenced in Races.cpp file." << std::endl;
-        return NULL;
+        return;
     }
 
     if (p->getCharRace() >= Races::RACE_TYPE_MAX)
     {
         std::cout << "Error. Program terminates." << std::endl;
-        return NULL;
+        return;
     }
     
+    char temp = '\0';
+    std::cout << "Do you wish to open it? Y/N" << std::endl;
+    std::cin >> temp;
+    if (temp == 'Y')
+    {
+        switch (p->getCharRace())
+        {
+            case Races::RACE_TYPE_WARRIOR:
+            {
+                ptr->push_back(new Item("Shield"));
+                ptr->push_back(new Item("Armor"));
+                ptr->push_back(new Item("One Handed Sword"));
+                break;
+            }
+            case Races::RACE_TYPE_WIZARD:
+            {
+                ptr->push_back(new Item("Robe"));
+                ptr->push_back(new Item("SpellBook"));
+                ptr->push_back(new Item("Staff"));
+                break;
+            }
+            case Races::RACE_TYPE_ROGUE:
+            {
+                ptr->push_back(new Item("Dagger"));
+                ptr->push_back(new Item("Chain mail"));
+                ptr->push_back(new Item("Speed Boots"));
+                break;
+            }
+            default:
+            {
+                std::cout << "UNHANDLED RACE TYPE : X" << std::endl;
+                return;
+            }
+        }
 
-    switch (p->getCharRace())
-    {
-    case Races::RACE_TYPE_WARRIOR:
-    {
-        ptr->push_back(new Item("Shield"));
-        ptr->push_back(new Item("Armor"));
-        ptr->push_back(new Item("One Handed Sword"));
-        break;
+        p->level++;
+        p->dmg += 25;
+        std::cout << std::right << std::setw(15) << "-Congrats! You advanced to level " << p->level << std::endl;
+        sleep_for(2s);
+        std::cout << std::right << std::setw(15) << "Your damage also increased by 25 points. " << std::endl;
     }
-    case Races::RACE_TYPE_WIZARD:
+    else
     {
-        ptr->push_back(new Item("Robe"));
-        ptr->push_back(new Item("SpellBook"));
-        ptr->push_back(new Item("Staff"));
-        break;
+        std::cout << std::right << std::setw(75) << "Alrighty, Almighty! You're off with no items!" << std::endl;
+        return;
     }
-    case Races::RACE_TYPE_ROGUE:
-    {
-        ptr->push_back(new Item("Dagger"));
-        ptr->push_back(new Item("Chain mail"));
-        ptr->push_back(new Item("Speed Boots"));
-        break;
-    }
-    default:
-    {
-        std::cout << "UNHANDLED RACE TYPE : X" << std::endl;
-        return NULL;
-        break;
-    }
-    }
-    p->level++;
-    p->dmg++;
-    std::cout << std::right << std::setw(15) << "-Congrats! You advanced to level " << p->level << std::endl;
-    std::cout << std::right << std::setw(15) << "Your damage also increased by 25 points." << p->dmg << std::endl;
+    logFoundItems(p);
+    AddChestItemsToInventory(p, ptr);
 
-    return ptr;
+
+   
 }
 
 void logFoundItems(Entity* p)
@@ -191,4 +222,33 @@ void logFoundItems(Entity* p)
     }
 
 
+}
+
+void GrantBonuses(Entity* p)
+{
+    std::random_device rd;
+    std::default_random_engine generator(rd());
+    std::uniform_int_distribution<int> distrib(0, p->m_item_inventory.size()-1);
+    
+
+
+    for (int i = 0; i < p->m_item_inventory.size(); i++)
+    {
+        int randomC = distrib(generator);
+        switch(randomC)
+        {
+        case ItemType::ITEM_TYPE_WEAPON:
+            {
+            std::cout << "Due to your " << p->m_item_inventory[randomC] << ", the elder gods have granted you some of their power\n" <<
+                "permanently increasing your damage by 40 points" << std::endl;
+            p->dmg += 40;
+            break;
+            }
+        case ItemType::ITEM_TYPE_ARMOR:
+            {
+            std::cout << 
+            }
+        }
+
+    }//////////////
 }
