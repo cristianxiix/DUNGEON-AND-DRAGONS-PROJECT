@@ -1,11 +1,11 @@
 #pragma once
 #include "Monster.h"
 #include <random>
+#include <iomanip>
 
 
 Monster::Monster() { Monster::hp = 0; Monster::dmg = 0; }
 Monster::~Monster() {}
-void Monster::Attack() {}
 const int Monster::ReturnMonsterType()
 {
 	return RACE_TYPE_MMAX;
@@ -20,35 +20,39 @@ const int Monster::ReturnMonsterType()
  }
 Goblin::Goblin() {}
 Goblin::~Goblin() {}
-void Goblin::Attack()
-{
-	std::string attack = "";
-
-	std::random_device rd;
-		std::default_random_engine generator(rd());
-		std::uniform_int_distribution<int> distrib(0, 2);
-		int randomC = distrib(generator);
-	
-
-		switch (randomC)
-		{
-			case 0:
-			{
-				attack = "Big Boulder"; break;
-			}
-			case 1:
-			{
-				attack = "Acidic Spit"; break;
-			}
-			case 2:
-			{
-				attack = "Flying kick"; break;
-			}
-		}
-}
+//int Goblin::Attack()
+//{
+//	std::string attack = "";
+//
+//	std::random_device rd;
+//		std::default_random_engine generator(rd());
+//		std::uniform_int_distribution<int> distrib(0, 2);
+//		int randomC = distrib(generator);
+//	
+//
+//		switch (randomC)
+//		{
+//			case 0:
+//			{
+//				attack = "Big Boulder"; break;
+//			}
+//			case 1:
+//			{
+//				attack = "Acidic Spit"; break;
+//			}
+//			case 2:
+//			{
+//				attack = "Flying kick"; break;
+//			}
+//		}
+//}
 const int Goblin::ReturnMonsterType()
 {
 	return RACE_TYPE_GOBLIN;
+}
+int Goblin::returnMonsterHp()
+{
+	return hp;
 }
 
 
@@ -60,35 +64,13 @@ Orc::Orc(std::string Name)
 	Name = this->name;
 }
 Orc::~Orc() {}
-void Orc::Attack()
-{
-	std::string attack = "";
-
-	std::random_device rd;
-	std::default_random_engine generator(rd());
-	std::uniform_int_distribution<int> distrib(0, 2);
-	int randomC = distrib(generator);
-
-
-	switch (randomC)
-	{
-		case 0:
-		{
-			attack = "Bare Foot"; break;
-		}
-		case 1:
-		{
-			attack = "Axe Swing"; break;
-		}
-		case 2:
-		{
-			attack = "Dark horror"; break;
-		}
-	}
-}
 const int Orc::ReturnMonsterType()
 {
 	return RACE_TYPE_ORC;
+}
+int Orc::returnMonsterHp()
+{
+	return hp;
 }
 
 
@@ -100,35 +82,13 @@ Troll::Troll(std::string Name)
 	Name = this->name;
 }
 Troll::~Troll() {}
-void Troll::Attack()
-{
-	std::string attack = "";
-
-	std::random_device rd;
-	std::default_random_engine generator(rd());
-	std::uniform_int_distribution<int> distrib(0, 2);
-	int randomC = distrib(generator);
-
-
-	switch (randomC)
-	{
-		case 0:
-		{
-			attack = "Vicious strike"; break;
-		}
-		case 1:
-		{
-			attack = "Jaw of the Troll"; break;
-		}
-		case 2:
-		{
-			attack = "Stinky Smell"; break;
-		}
-	}
-}
 const int Troll::ReturnMonsterType()
 {
 	return RACE_TYPE_TROLL;
+}
+int Troll::returnMonsterHp()
+{
+	return hp;
 }
 
 
@@ -161,4 +121,41 @@ Monster* createMonster(int path)
 		}
 	}
 	return m;
+}
+
+int AttackPlayer(Entity* p, Monster* m)
+{
+
+	std::vector<std::string> attacks;
+
+	std::random_device rd;
+	std::default_random_engine generator(rd());
+	std::uniform_int_distribution<int> distrib(0, 2);
+	int randomC = distrib(generator);
+
+
+	switch (m->ReturnMonsterType())
+	{
+		case MonsterRaces::RACE_TYPE_GOBLIN:
+		{
+			attacks.push_back("Big Boulder");
+			attacks.push_back("Acidic Spit");
+			attacks.push_back("Jumping kick");
+		}
+		case MonsterRaces::RACE_TYPE_TROLL:
+		{
+			attacks.push_back("Vicious Strike");
+			attacks.push_back("Jaw of the Troll");
+			attacks.push_back("Holy Spirit");
+		}
+		case MonsterRaces::RACE_TYPE_ORC:
+		{
+			attacks.push_back("Bare Food");
+			attacks.push_back("Axe Swing");
+			attacks.push_back("Dark Horror");
+		}
+	}
+
+	std::cout << std::right << std::setw(55) << "You've struck the PLAYER with your " << attacks[randomC] << " for " << m->dmg << "health points." << std::endl;
+	return m->dmg;
 }

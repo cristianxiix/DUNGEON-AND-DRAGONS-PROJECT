@@ -2,9 +2,9 @@
 #include "Races.h"
 #include "Namespaces.h"
 #include <random>
+#include "Monster.h"
 
-
-Item::Item(std::string itmName) : m_item_name(itmName) {}
+Item::Item(std::string itmName, int m_type) : m_item_name(itmName), m_item_type(m_type) {}
 Item::Item() {}
 std::string Item::returnItemName() { return this->m_item_name; }
 
@@ -27,22 +27,39 @@ Entity::Entity()
 }
 Entity::~Entity() {}
 const int Entity::getCharRace() { return 4; }
+int Entity::getDmgPoints()
+{
+    return dmg;
+}
 
 Warrior::Warrior(std::string pName) { Warrior::playerName = pName;  Warrior::level = 0; Warrior::dmg = 35; Warrior::HealthPoints = 100; }
 Warrior::Warrior() {}
 Warrior::~Warrior() {}
 const int Warrior::getCharRace() { return 1; }
+int Warrior::getHealthPoints()
+{
+    return HealthPoints;
+}
+
 
 Wizard::Wizard(std::string pName) { Wizard::playerName = pName; Wizard::level = 0; Wizard::dmg = 35; HealthPoints = 100; }
 Wizard::Wizard() {}
-
 Wizard::~Wizard() {}
 const int Wizard::getCharRace() { return 2; }
+int Wizard::getHealthPoints()
+{
+    return HealthPoints;
+}
+
 
 Rogue::Rogue(std::string pName) { Rogue::playerName = pName; Rogue::level = 0; Rogue::dmg = 35; HealthPoints = 100; }
 Rogue::Rogue() {}
 Rogue::~Rogue() {}
 const int Rogue::getCharRace() { return 3; }
+int Rogue::getHealthPoints()
+{
+    return HealthPoints;
+}
 
 
 
@@ -168,23 +185,23 @@ void ChestFindingScene(Entity* p)
         {
             case Races::RACE_TYPE_WARRIOR:
             {
-                ptr->push_back(new Item("Shield"));
-                ptr->push_back(new Item("Armor"));
-                ptr->push_back(new Item("One Handed Sword"));
+                ptr->push_back(new Item("One Handed Sword", 0));
+                ptr->push_back(new Item("Breastplate", 1));
+                ptr->push_back(new Item("Shield", 2));
                 break;
             }
             case Races::RACE_TYPE_WIZARD:
             {
-                ptr->push_back(new Item("Robe"));
-                ptr->push_back(new Item("SpellBook"));
-                ptr->push_back(new Item("Staff"));
+                ptr->push_back(new Item("Staff", 0));
+                ptr->push_back(new Item("Robe",1));
+                ptr->push_back(new Item("SpellBook", 2));
                 break;
             }
             case Races::RACE_TYPE_ROGUE:
             {
-                ptr->push_back(new Item("Dagger"));
-                ptr->push_back(new Item("Chain mail"));
-                ptr->push_back(new Item("Speed Boots"));
+                ptr->push_back(new Item("Dagger", 0));
+                ptr->push_back(new Item("Chain mail", 1));
+                ptr->push_back(new Item("Speed Boots", 2));
                 break;
             }
             default:
@@ -205,19 +222,20 @@ void ChestFindingScene(Entity* p)
         std::cout << std::right << std::setw(75) << "Alrighty, Almighty! You're off with no items!" << std::endl;
         return;
     }
-    logFoundItems(p);
+    
     AddChestItemsToInventory(p, ptr);
+    logFoundItems(ptr);
+    GrantBonuses(p);
 
-
-   
+    return;
 }
 
-void logFoundItems(Entity* p)
+void logFoundItems(std::vector<Item*>* inv)
 {
     std::cout << std::right << std::setw(75) << "You have found the following items:" << std::endl;
-    for (int i = 0; i < p->m_item_inventory.size(); i++)
+    for (int i = 0; i < inv->size(); i++)
     {
-        std::cout << std::right << std::setw(60) << p->m_item_inventory[i]->returnItemName() << std::endl;
+        std::cout << std::right << std::setw(60) << inv->at(i)->returnItemName() << std::endl;
         sleep_for(2s);
     }
 
@@ -226,29 +244,87 @@ void logFoundItems(Entity* p)
 
 void GrantBonuses(Entity* p)
 {
-    std::random_device rd;
-    std::default_random_engine generator(rd());
-    std::uniform_int_distribution<int> distrib(0, p->m_item_inventory.size()-1);
-    
-
-
     for (int i = 0; i < p->m_item_inventory.size(); i++)
     {
-        int randomC = distrib(generator);
-        switch(randomC)
+        switch(i)
         {
         case ItemType::ITEM_TYPE_WEAPON:
             {
-            std::cout << "Due to your " << p->m_item_inventory[randomC] << ", the elder gods have granted you some of their power\n" <<
-                "permanently increasing your damage by 40 points" << std::endl;
+            std::cout << std::right << std::setw(55) << "Due to your " << p->m_item_inventory[i]->returnItemName() << '\n' <<
+            std::right << std::setw(55) << "the elder gods have granted you some of their power.\n" <<
+            std::right << std::setw(55) << "permanently increasing your DAMAGE BY 40 POINTS." << std::endl;
             p->dmg += 40;
+            sleep_for(2s);
             break;
             }
         case ItemType::ITEM_TYPE_ARMOR:
             {
-            std::cout << 
+            std::cout << std::right << std::setw(55) << "Your " << p->m_item_inventory[i]->returnItemName() << " has granted you 35 DEFENSE POINTS." << std::endl;
+            sleep_for(2s);
+            break;
+            }
+        case ItemType::ITEM_TIME_ADDITIONAL:
+            {
+                if (p->getCharRace() == Races::RACE_TYPE_WARRIOR)
+                {
+                    std::cout << std::right << std::setw(55) << "Your overall VITALITY has also increased by 15 POINTS." << std::endl;
+                    sleep_for(2s);
+                    break;
+                }
+             std::cout << std::right << std::setw(55) << "Your overall AGILITY has also increased by 15 points." << std::endl;
+            break;
+
             }
         }
 
-    }//////////////
+    }
 }
+
+
+int Attack(Entity* p, Monster* m)
+{
+    if (p->getHealthPoints() == 0)
+    {
+        std::cout << "THE MONSTER HAS WON." << std::endl;
+            return -1;
+    }
+
+    std::random_device rd;
+    std::default_random_engine generator(rd());
+    std::uniform_int_distribution<int> distrib(0, 2);
+    std::vector<std::string> strikes;
+
+    switch (p->getCharRace())
+    {
+        case Races::RACE_TYPE_ROGUE:
+        {
+            strikes.push_back("Vendetta");
+            strikes.push_back("Gauge");
+            strikes.push_back("Multi-Strike");
+            break;
+        }
+        case Races::RACE_TYPE_WARRIOR:
+        {
+           strikes.push_back("Whirlwind");
+           strikes.push_back("PowerStrike");
+           strikes.push_back("Multi-Fury");
+            break;
+        }
+        case Races::RACE_TYPE_WIZARD:
+        {
+           strikes.push_back("Arcane Ball");
+           strikes.push_back("IceBall");
+           strikes.push_back("Fire Ball");
+            break;
+        }
+    }
+
+    int randomC = distrib(generator);
+    
+    
+    std::cout << std::right << std::setw(55) << "You've struck the monster with your " << strikes[randomC] << "'s for " << p->getDmgPoints() << "health points." << std::endl;
+    return p->getDmgPoints();
+
+}
+
+

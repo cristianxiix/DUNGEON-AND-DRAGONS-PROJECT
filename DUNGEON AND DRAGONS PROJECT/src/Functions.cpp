@@ -2,7 +2,8 @@
 #include "Functions.h"
 #include "Namespaces.h"
 #include "ConsoleColors.h"
-#include "Monster.h"
+#include "Monster.cpp"
+#include "Races.h"
 
 void start()
 {
@@ -52,10 +53,10 @@ void Wait()
     
     sleep_for(5s);
     std::cout << ANSI_COLOR_YELLOW << std::right << R""(
-         In the Realm of Eldoria everything is possible, from flying horses to self-healing swords
-        From losers to Kings, dust becoming gold flakes, creatures such as Goblins, Trolls, Cyclops
-                     Fighting each other over who s a greater fighter
-                                        WELCOME TO ELDORIA.
+                 In the Realm of Eldoria everything is possible, from flying horses to self-healing swords
+                From losers to Kings, dust becoming gold flakes, creatures such as Goblins, Trolls, Cyclops
+                            Fighting each other over who s a greater fighter
+                                             WELCOME TO ELDORIA.
     )"" << ANSI_COLOR_RESET << std::endl;
     std::cout << "\n\n";
     
@@ -137,6 +138,47 @@ int CrossRoadsScene()
 // 
 // 
 //void BattleScene() ->>encounter enemy
+void BattleScene(Monster* m, Entity* p)
+{
+    std::string mbn;
+    if (m->ReturnMonsterType() == MonsterRaces::RACE_TYPE_GOBLIN)
+        mbn = "Goblin";
+    else if (m->ReturnMonsterType() == MonsterRaces::RACE_TYPE_TROLL)
+        mbn = "Troll";
+    else
+        mbn = "Orc";
+    std::cout << std::right << std::setw(55) << "GRRRRAAAAH!!! I am the Mighty " << mbn << " of this land!" << std::endl;
+    std::cout << std::right << std::setw(55) << "Turn back or face me!" << std::endl;
 
+    int choice;
+    std::cout << "1.I feel ready to fight this!" << std::endl;
+    std::cout << "2.Maybe some other time." << std::endl;
+    std::cin >> choice;
+
+    if (choice == 1)
+    {
+        while (p->getHealthPoints() != 0 || m->returnMonsterHp() != 0)
+        {
+            AttackPlayer(p, m);
+            Attack(p, m);
+        }
+        
+    }
+
+
+
+
+
+
+
+
+    else
+    {
+        std::cout << "Game's over, coward" << std::endl;
+        return;
+    }
+
+
+}
 
 

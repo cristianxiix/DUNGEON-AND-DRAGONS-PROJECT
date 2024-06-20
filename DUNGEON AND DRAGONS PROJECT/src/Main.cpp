@@ -31,10 +31,7 @@ int main()
 		Wait();
 		if (checkContinue())
 		{
-			CrossRoadsScene(); //returneaza un int cu alegerea monstrului
-
-			
-			
+			CrossRoadsScene(); //returneaza un int cu alegerea automata a monstrului
 			ChestFindingScene(player); //automat fara ptr
 			//AddChestItemsToInventory(player, ptr); // de intrebart
 			

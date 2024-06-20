@@ -4,6 +4,7 @@
 #include <iostream>
 #include <iomanip>
 #include "ConsoleColors.h"
+#include "Monster.h"
 
 enum Races {
 	RACE_TYPE_WARRIOR = 1,
@@ -13,16 +14,17 @@ enum Races {
 };
 enum ItemType
 {
-	ITEM_TYPE_WEAPON = 1,
+	ITEM_TYPE_WEAPON = 0,
 	ITEM_TYPE_ARMOR,
 	ITEM_TIME_ADDITIONAL
 };
 class Item
 {
-	std::string m_item_name;
+	std::string m_item_name = 0;
+	int m_item_type = 0;
 public:
 	Item();
-	Item(std::string itmName);
+	Item(std::string itmName, int m_type);
 	std::string returnItemName();
 };
 
@@ -38,14 +40,19 @@ public:
 	Entity(std::string pName);
 	Entity();
 	~Entity();
+	virtual int getHealthPoints();
+	virtual int getDmgPoints();
 
+
+	const virtual int getCharRace();
 	friend Entity* CreateCharacterRace();
 	friend void logChoice(Entity*& e);
-	const virtual int getCharRace();
 	friend void AddChestItemsToInventory(Entity*& p, std::vector<Item*>* ptr);
 	friend void ChestFindingScene(Entity* p);
-	friend void logFoundItems(Entity* p);
-	friend void GrantBonuses(Entity* p);
+	friend void logFoundItems(std::vector<Item*>* inv);
+	friend void GrantBonuses(Entity* p); 
+    friend int Attack(Entity* p, Monster* m);
+	
 };
 
 
@@ -53,9 +60,9 @@ Entity* CreateCharacterRace();  ////function definition inside Races.cpp
 void logChoice(Entity*& e); ////function definition inside Functions.cpp
 void AddChestItemsToInventory(Entity*& p, std::vector<Item*>* ptr);
 void ChestFindingScene(Entity* p);
-void logFoundItems(Entity* p);
+void logFoundItems(std::vector<Item*>* inv);
 void GrantBonuses(Entity* p);
-
+int Attack(Entity* p, Monster* m);
 
 class Warrior : public Entity
 {
@@ -64,6 +71,8 @@ public:
 	Warrior(std::string pName);
 	~Warrior();
 	const int getCharRace();
+    int getHealthPoints();
+
 };
 
 class Wizard : public Entity
@@ -73,6 +82,8 @@ public:
 	Wizard(std::string pName);
 	~Wizard();
 	const int getCharRace();
+	int getHealthPoints();
+
 };
 
 class Rogue : public Entity
@@ -82,4 +93,6 @@ public:
 	Rogue(std::string pName);
 	~Rogue();
 	const int getCharRace();
+	int getHealthPoints();
+
 };

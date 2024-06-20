@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-
+#include "Races.h"
 
 enum MonsterRaces {
 	RACE_TYPE_GOBLIN = 1,
@@ -20,12 +20,15 @@ public:
 	Monster();
 	Monster(std::string Name);
 	~Monster();
-	virtual void Attack() = 0;
+	friend int AttackPlayer(Entity* p, Monster* m);
 	const virtual int ReturnMonsterType();
 	friend Monster* createMonster(int path);
+	virtual std::string ReturnMonsterBaseName() = 0;
+	virtual int returnMonsterHp();
+
 };
  Monster* createMonster(int path);
-
+ int AttackPlayer(Entity* p, Monster* m);
 
 
 class Goblin : public Monster
@@ -34,8 +37,10 @@ public:
 	Goblin();
 	Goblin(std::string Name);
 	~Goblin();
-	void Attack();
+	//int Attack();
 	const int ReturnMonsterType();
+	std::string ReturnMonsterBaseName();
+	int returnMonsterHp();
 
 };
 
@@ -45,8 +50,10 @@ public:
 	Troll();
 	Troll(std::string Name);
 	~Troll();
-	void Attack();
+	//int Attack();
 	const int ReturnMonsterType();
+	std::string ReturnMonsterBaseName();
+	int returnMonsterHp();
 
 };
 class Orc : public Monster
@@ -55,7 +62,9 @@ public:
 	Orc();
 	Orc(std::string Name);
 	~Orc();
-	void Attack();
+	//int Attack();
 	const int ReturnMonsterType();
+	std::string ReturnMonsterBaseName();
+	int returnMonsterHp();
 
 };
