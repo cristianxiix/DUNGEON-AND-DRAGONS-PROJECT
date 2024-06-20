@@ -236,7 +236,7 @@ void ChestFindingScene(Entity* p)
         }
 
         p->level++;
-        p->dmg += 25;
+        p->dmg += 5;
         std::cout << std::right << std::setw(15) << "-Congrats! You advanced to level " << p->level << std::endl;
         sleep_for(2s);
         std::cout << std::right << std::setw(15) << "Your damage also increased by 25 points. " << std::endl;
@@ -277,7 +277,7 @@ void GrantBonuses(Entity* p)
             std::cout << std::right << /*std::setw(25)*/  "Due to your " << p->m_item_inventory[i]->returnItemName() << std::endl;
             std::cout << std::left << /*std::setw(55)*/   "the elder gods have granted you some of their power" << std::endl;
             std::cout << std::left << /*std::setw(55) <<*/ "permanently increasing your DAMAGE BY 40 POINTS." << std::endl;
-            p->dmg += 40;
+            p->dmg += 20;
             sleep_for(2s);
             break;
             }

@@ -1,6 +1,6 @@
 #pragma once
 #include "Functions.h"
-//#include "Races.h"
+#include "Races.h"
 #include "Namespaces.h"
 #include "Sounds.h"
 #include "Monster.h"

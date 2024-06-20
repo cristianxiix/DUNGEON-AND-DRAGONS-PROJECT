@@ -141,8 +141,8 @@ void BattleScene(Monster* mob, Entity* pl)
     std::cout << std::right << std::setw(55) << "GRRRRAAAAH!!! I am the Mighty " << mob->ReturnMonsterBaseName() << " of this land!" << std::endl;
     std::cout << std::right << std::setw(55) << "Turn back or face me!" << std::endl;
 
-    int choice;
-    std::string winner;
+    int choice = 0;
+    std::string winner = "";
     std::cout << "1.I feel ready to fight this!" << std::endl;
     std::cout << "2.Maybe some other time." << std::endl;
     std::cin >> choice;
@@ -179,10 +179,6 @@ void BattleScene(Monster* mob, Entity* pl)
 
 
 ////MONSTER BASE NAME CAN BE DELETED
-
-
-
-
 int AttackPlayer(Monster* m)
 {
     if (m->hp == 0)
