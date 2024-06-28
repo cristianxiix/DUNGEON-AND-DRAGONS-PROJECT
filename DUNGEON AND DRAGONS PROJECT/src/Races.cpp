@@ -47,6 +47,11 @@ int Warrior::getHealthPoints()
 }
 int Warrior::setNewHP(int amount)
 {
+    if (amount >= this->HealthPoints)
+    {
+        this->HealthPoints = 0;
+        return this->HealthPoints;
+    }
    this->HealthPoints -= amount;
    return this->HealthPoints;
 
@@ -64,6 +69,12 @@ int Wizard::getHealthPoints()
 }
 int Wizard::setNewHP(int amount)
 {
+    if (amount >= this->HealthPoints)
+    {
+        this->HealthPoints = 0;
+        return this->HealthPoints;
+
+    }
     this->HealthPoints -= amount;
     return this->HealthPoints;
 
@@ -81,6 +92,12 @@ int Rogue::getHealthPoints()
 }
 int Rogue::setNewHP(int amount)
 {
+    if (amount >= this->HealthPoints)
+    {
+        this->HealthPoints = 0;
+        return this->HealthPoints;
+
+    }
     this->HealthPoints -= amount;
     return this->HealthPoints;
 }
@@ -238,8 +255,8 @@ void ChestFindingScene(Entity* p)
         p->level++;
         p->dmg += 5;
         std::cout << std::right << std::setw(15) << "-Congrats! You advanced to level " << p->level << std::endl;
-        sleep_for(2s);
-        std::cout << std::right << std::setw(15) << "Your damage also increased by 25 points. " << std::endl;
+        sleep_for(3s);
+        std::cout << std::right << std::setw(15) << "Your damage also increased by 5 points. " << std::endl;
     }
     else
     {
@@ -260,7 +277,7 @@ void logFoundItems(std::vector<Item*>* inv)
     for (int i = 0; i < inv->size(); i++)
     {
         std::cout << std::right << std::setw(60) << inv->at(i)->returnItemName() << std::endl;
-        sleep_for(2s);
+        sleep_for(3s);
     }
 
 
@@ -278,13 +295,13 @@ void GrantBonuses(Entity* p)
             std::cout << std::left << /*std::setw(55)*/   "the elder gods have granted you some of their power" << std::endl;
             std::cout << std::left << /*std::setw(55) <<*/ "permanently increasing your DAMAGE BY 40 POINTS." << std::endl;
             p->dmg += 20;
-            sleep_for(2s);
+            sleep_for(3s);
             break;
             }
         case ItemType::ITEM_TYPE_ARMOR:
             {
             std::cout << std::right << std::setw(55) << "Your " << p->m_item_inventory[i]->returnItemName() << " has granted you 35 DEFENSE POINTS." << std::endl;
-            sleep_for(2s);
+            sleep_for(3s);
             break;
             }
         case ItemType::ITEM_TIME_ADDITIONAL:
@@ -292,7 +309,7 @@ void GrantBonuses(Entity* p)
                 if (p->getCharRace() == Races::RACE_TYPE_WARRIOR)
                 {
                     std::cout << std::right << std::setw(55) << "Your overall VITALITY has also increased by 15 POINTS." << std::endl;
-                    sleep_for(2s);
+                    sleep_for(3s);
                     break;
                 }
              std::cout << std::left << "Your overall AGILITY has also increased by 15 points." << std::endl;
@@ -346,7 +363,7 @@ int Attack(Entity* p, Monster* m)
     int randomC = distrib(generator);
     
     
-    std::cout << std::right << std::setw(55) << "You've struck the monster with your " << strikes[randomC] << "'s for " << p->getDmgPoints() << "health points." << std::endl;
+    std::cout << std::right << std::setw(65) << "You've struck the monster with your " << strikes[randomC] << " for " << p->getDmgPoints() << "health points." << '\n' << std::endl;
     return p->getDmgPoints();
 
 }

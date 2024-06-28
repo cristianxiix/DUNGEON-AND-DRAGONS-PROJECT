@@ -23,8 +23,8 @@ public:
 	~Monster();
 	friend int AttackPlayer( Monster* m);
 	const virtual int ReturnMonsterType();
-	friend Monster* createMonster(int path);
 	virtual std::string ReturnMonsterBaseName();
+	friend Monster* createMonster(int path);
 	virtual int returnMonsterHp() = 0;
 	virtual int setNewMonsterHp(int amount);
 };
@@ -53,8 +53,8 @@ public:
 	Troll(std::string Name);
 	~Troll();
 	//int Attack();
-	const int ReturnMonsterType();
 	std::string ReturnMonsterBaseName();
+	const int ReturnMonsterType();
 	int returnMonsterHp();
 	int setNewMonsterHp(int amount);
 };
@@ -65,8 +65,8 @@ public:
 	Orc(std::string Name);
 	~Orc();
 	//int Attack();
-	const int ReturnMonsterType();
 	std::string ReturnMonsterBaseName();
+	const int ReturnMonsterType();
 	int returnMonsterHp();
 	int setNewMonsterHp(int amount);
 };

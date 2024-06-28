@@ -14,6 +14,11 @@ std::string Monster::ReturnMonsterBaseName()
 }
 int Monster::setNewMonsterHp(int amount)
 {
+	if (amount >= this->hp)
+	{
+		this->hp = 0;
+		return this->hp;
+	}
 	this->hp -= amount;
 	return this->hp;
 }
@@ -36,7 +41,6 @@ int Goblin::returnMonsterHp()
 {
 	if (hp == 0)
 	{
-		std::cout << "This monster is already dead." << std::endl;
 		return NULL;
 	}
 	return hp;
@@ -47,6 +51,11 @@ std::string Goblin::ReturnMonsterBaseName()
 }
 int Goblin::setNewMonsterHp(int amount)
 {
+	if (amount >= this->hp)
+	{
+		this->hp = 0;
+		return this->hp;
+	}
 	this->hp -= amount;
 	return this->hp;
 }
@@ -70,7 +79,6 @@ int Orc::returnMonsterHp()
 {
 	if (hp == 0)
 	{
-		std::cout << "This monster is already dead." << std::endl;
 		return NULL;
 	}
 	return hp;
@@ -82,6 +90,11 @@ std::string Orc::ReturnMonsterBaseName()
 }
 int Orc::setNewMonsterHp(int amount)
 {
+	if (amount >= this->hp)
+	{
+		this->hp = 0;
+		return this->hp;
+	}
 	this->hp -= amount;
 	return this->hp;
 }
@@ -102,7 +115,6 @@ int Troll::returnMonsterHp()
 {
 	if (hp == 0)
 	{
-		std::cout << "This monster is already dead." << std::endl;
 		return NULL;
 	}
 	return hp;
@@ -113,6 +125,11 @@ std::string Troll::ReturnMonsterBaseName()
 }
 int Troll::setNewMonsterHp(int amount)
 {
+	if (amount >= this->hp)
+	{
+		this->hp = 0;
+		return this->hp;
+	}
 	this->hp -= amount;
 	return this->hp;
 }

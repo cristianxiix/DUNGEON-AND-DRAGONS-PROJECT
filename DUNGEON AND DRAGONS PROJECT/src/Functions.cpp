@@ -137,45 +137,53 @@ Monster* CrossRoadsScene()
 
 void BattleScene(Monster* mob, Entity* pl)
 {
-    
-    std::cout << std::right << std::setw(55) << "GRRRRAAAAH!!! I am the Mighty " << mob->ReturnMonsterBaseName() << " of this land!" << std::endl;
-    std::cout << std::right << std::setw(55) << "Turn back or face me!" << std::endl;
+
+    std::cout << std::right << std::setw(65) << "GRRRRAAAAH!!! I am the Mighty " << mob->ReturnMonsterBaseName() << " of this land!" << std::endl;
+    std::cout << std::right << std::setw(65) << "Turn back or face me!" << std::endl;
 
     int choice = 0;
-    std::string winner = "";
     std::cout << "1.I feel ready to fight this!" << std::endl;
     std::cout << "2.Maybe some other time." << std::endl;
     std::cin >> choice;
 
     int mobRes = 0;
     int pRes = 0;
-    if (choice == 1)
+    while (choice == 1)
     {
-        while (mob->returnMonsterHp() != 0 || pl->getHealthPoints() != 0)
+        if (mob->returnMonsterHp() != 0 || pl->getHealthPoints() != 0)
         {
-            
+
             mobRes = AttackPlayer(mob);
             pl->setNewHP(mobRes);
-            std::cout << "Player's new hp is:" << pl->getHealthPoints();
+            std::cout << "PLAYER's new hp is:  " << pl->getHealthPoints() << std::endl;
             pRes = Attack(pl, mob);
             mob->setNewMonsterHp(pRes);
-            std::cout << "Monster's new hp is:" << mob->returnMonsterHp();
+            std::cout << "MONSTER's new hp is:  " << mob->returnMonsterHp() << std::endl;
 
             sleep_for(3s);
+        }
+        if (mob->returnMonsterHp() == 0)
+            break;
+    }
 
             if (mob->returnMonsterHp() == 0)
-                winner = "Player";
-            else
             {
-                std::cout << "Game's over, coward" << std::endl;
+                std::cout << std::setw(65) << "Player has won!" << std::endl;
                 return;
             }
-        }
-    }
-        std::cout << "The player has won!" << std::endl;
+            else if (pl->getHealthPoints() == 0)
+            {
+
+                std::cout << std::setw(65) << "Game's over, coward" << std::endl;
+                std::cout << std::setw(65) << "Monster has won!" << std::endl;
+                return;
+            }
+        
+}
+       
     
 
-}
+
 
 
 ////MONSTER BASE NAME CAN BE DELETED
@@ -200,21 +208,24 @@ int AttackPlayer(Monster* m)
 		    attacks.push_back("Big Boulder");
 		    attacks.push_back("Acidic Spit");
 		    attacks.push_back("Jumping kick");
+            break;
 	    }
 	    case MonsterRaces::RACE_TYPE_TROLL:
 	    {
 		    attacks.push_back("Vicious Strike");
 		    attacks.push_back("Jaw of the Troll");
 		    attacks.push_back("Holy Spirit");
+            break;
 	    }
 	    case MonsterRaces::RACE_TYPE_ORC:
 	    {
 		    attacks.push_back("Bare Food");
 		    attacks.push_back("Axe Swing");
 		    attacks.push_back("Dark Horror");
+            break;
 	    }
 	}
 
-	std::cout << std::right << std::setw(55) << "The MONSTER has struck the PLAYER with " << attacks[randomC] << " for " << m->dmg << "health points." << std::endl;
+	std::cout << std::right << std::setw(65) << "The MONSTER has struck the PLAYER with " << attacks[randomC] << " for " << m->dmg << " health points." << '\n' << std::endl;
 	return m->dmg;
 }
