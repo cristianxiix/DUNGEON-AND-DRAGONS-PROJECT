@@ -94,21 +94,21 @@ bool checkContinue()
 
 bool secondCheck()
 {
-    bool choice;
+    short choice = 0;
     std::cout << std::right << std::setw(70) << "Are you ready to continue the journey?" << std::endl;
     std::cout << std::right << std::setw(60) << "1.Yes, I am!" << std::endl;
     std::cout << std::right << std::setw(63) << "2.No, I am not!" << std::endl;
     std::cin >> choice;
 
-    if (choice)
+    if (choice == 1)
     {
         std::cout << std::right << std::setw(90) << "Courageous adventurer, good luck on this mysterious journey!" << std::endl;
         return true;
     }
     else
     {
-        std::cout << std::right << std::setw(90) << "Cowards are not allowed a third chance!" << std::endl;
-        exit(0);
+        std::cout << std::right << std::setw(75) << "Cowards are not allowed a third chance!" << std::endl;
+        return false;
     }
 }
 

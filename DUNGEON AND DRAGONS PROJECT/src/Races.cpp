@@ -363,7 +363,7 @@ int Attack(Entity* p, Monster* m)
     int randomC = distrib(generator);
     
     
-    std::cout << std::right << std::setw(65) << "You've struck the monster with your " << strikes[randomC] << " for " << p->getDmgPoints() << "health points." << '\n' << std::endl;
+    std::cout << std::right << std::setw(65) << "You've struck the monster with your " << strikes[randomC] << " for " << p->getDmgPoints() << " health points." << '\n' << std::endl;
     return p->getDmgPoints();
 
 }

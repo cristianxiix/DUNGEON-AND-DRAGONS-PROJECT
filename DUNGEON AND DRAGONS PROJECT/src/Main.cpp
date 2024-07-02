@@ -36,24 +36,29 @@ int main()
 			BattleScene(monster, player);
 		}
 			else
-			{/*
+			{
 				sleep_for(5s);
 				if (secondCheck())
 				{
-					ptr = ChestFindingScene(player);
-					AddChestItemsToInventory(player, ptr);
-					delete ptr;
-					logFoundItems(player);
+					monster = CrossRoadsScene(); //returneaza un monstru in mod automat, in functie de path ul ales
+					ChestFindingScene(player); //automat fara ptr
+
+					mmenu->StopSound();
+					mmenu = changeFilePath("./music/BattleFinal.wav");
+					StartPlaying(mmenu);
+
+					BattleScene(monster, player);
 				}
 				else
 				{
+					std::cout << "You've quit the game successfully!" << std::endl;
 					exit(0);
-				}*/
+				}
 			}
 	}
 	else
 	{
-		std::cin.get();
+		std::cout << "You've quit the game successfully!" << std::endl;
 	}
 
 	mmenu->~Sound();
