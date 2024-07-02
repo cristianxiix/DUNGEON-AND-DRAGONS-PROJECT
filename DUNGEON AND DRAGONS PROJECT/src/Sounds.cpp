@@ -4,7 +4,7 @@
 
 
  
-Sound::Sound(std::string filepath)
+Sound::Sound(const std::string filepath)
 {
 	if(SDL_LoadWAV(filepath.c_str(), &m_audioSpec, &m_wave_start, &m_waveLength) == nullptr)
 	{
@@ -42,7 +42,7 @@ void Sound::SetupDevice()
 }
 
 
-Sound* changeFilePath(std::string newPath)
+Sound* changeFilePath(const std::string newPath)
 {
 	Sound* p = new Sound(newPath);
 	return p;
